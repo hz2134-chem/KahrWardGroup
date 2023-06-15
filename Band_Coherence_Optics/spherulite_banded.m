@@ -1,6 +1,6 @@
 function [DI,Zdata,Zdatadiff] = spherulite_banded(nFiber,psi,n_vect,d,Lam)
 
-% example script:[DI,Zdata,Zdatadiff] = spherulite_banded(10,13,[1.66,1.65,1.53],150,550);
+% example script:[DI,Zdata,Zdatadiff] = spherulite_banded(10,13,[1.55,1.656,1.452],150,550);
 
 % nFiber = number of fibers
 % psi = total maximum misalignment angle (degrees)
@@ -82,7 +82,7 @@ for X = 1:N
             %R = rotz(t)*rotx(phi + pi/4); %If no incoherence
             R = rotz(t)*rotx(phi + pi/4 + 2*pi*(random_INC)/p);  
             %Whether +pi/4 or not depends on experimental observations of the crystal system; 
-            %For coumarin and aspirin, yes; for mannitol, no; 
+            %For coumarin, yes; for mannitol, no; 
             epsilon = R*epsilon_c*R.';
             L  = (sqrt(epsilon(1,1))-sqrt(epsilon(2,2)))*2*pi*d/Lam;
             Lp = (sqrt((epsilon(1,1)+epsilon(1,2)+epsilon(2,1)+epsilon(2,2))./2)-...
