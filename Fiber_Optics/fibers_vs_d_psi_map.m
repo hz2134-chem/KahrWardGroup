@@ -1,5 +1,5 @@
 function fibers_vs_d_psi_map(nFiber, n_vect, Lam)
-    psi = linspace(0, 180, 91); % psi in degrees
+    psi = linspace(0, 180, 181); % psi in degrees
     d = linspace(0, 3000, 301);
     cbValues = zeros(length(psi), length(d));
     lbValues = zeros(length(psi), length(d));  
@@ -40,7 +40,8 @@ function fibers_vs_d_psi_map(nFiber, n_vect, Lam)
 blueWhiteRed = [linspace(0,1,128)', linspace(0,1,128)', ones(128,1); ...
                 ones(128,1), linspace(1,0,128)', linspace(1,0,128)'];
 blackToGreen = [zeros(256,1), linspace(0,1,256)', zeros(256,1)];
-[PsiGrid, DGrid] = meshgrid(psi, d);
+d0 = d/1000;
+[PsiGrid, DGrid] = meshgrid(psi, d0);
 figure;
 
 % circular retardance
