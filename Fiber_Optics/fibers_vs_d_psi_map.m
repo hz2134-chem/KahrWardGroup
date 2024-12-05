@@ -11,7 +11,7 @@ function fibers_vs_d_psi_map(nFiber, n_vect, Lam)
             M = eye(4);
 
             for k = 1:nFiber
-                t = - psi_rad * ((k - 1) / (nFiber - 1)); % average splay angle why -psi? To be consistent with Xiaoyan and Melissa's convention of psi/handedness correlation
+                t = psi_rad * ((k - 1) / (nFiber - 1)); % average splay angle
                 R = rotz(t) * rotx(0); % rotation matrix
                 epsilon = R * epsilon_c * R';
                 L = (sqrt(epsilon(1,1)) - sqrt(epsilon(2,2))) * 2 * pi * d(i) / Lam;
