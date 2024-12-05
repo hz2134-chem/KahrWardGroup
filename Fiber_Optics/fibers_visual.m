@@ -40,7 +40,7 @@ blackToGreen = [zeros(256,1), linspace(0,1,256)', zeros(256,1)];
 % visualizing fibers
         for k = 1:numFibers
             baseZ = (k-1) * a;
-            tilt = (k-1) * psi_0;
+            tilt = (k-1) * -psi_0; % why -psi? To be consistent with Dr. X. Cui and Dr. M. Tan's convention of psi/handedness correlation
             corners = [-c/2, -b/2; c/2, -b/2; c/2, b/2; -c/2, b/2];
             Ro = [cos(tilt), -sin(tilt); sin(tilt), cos(tilt)];
             rotatedCorners = corners * Ro;
@@ -69,18 +69,20 @@ blackToGreen = [zeros(256,1), linspace(0,1,256)', zeros(256,1)];
         
 % Mueller matrix calculation      
         for j = 1:numFibers
-            t = -psi*((j-1)/(numFibers-1)); % average splay angle; why -psi? To be consistent with Xiaoyan and Melissa's convention of psi/handedness correlation
+            t = psi*((j-1)/(numFibers-1)); % average splay angle; 
             R = rotz(t)*rotx(0); % rotation matrix
             epsilon = R*epsilon_c*R.';
             L  = (sqrt(epsilon(1,1))-sqrt(epsilon(2,2)))*2*pi*d/Lam; % LB calculated from refractive indices at each pixel
             Lp = (sqrt((epsilon(1,1)+epsilon(1,2)+epsilon(2,1)+epsilon(2,2))./2)-...
                    sqrt((epsilon(1,1)-epsilon(1,2)-epsilon(2,1)+epsilon(2,2))./2))*2*pi*d/Lam; % LB'
             LB = real(L);
-            LD = imag(L);
+            %LD = imag(L);
             LBp = real(Lp);
-            LDp = imag(Lp);
-            Mat = exp(-sqrt(LD^2+LDp^2))*expm([0,-LD,-LDp,0;-LD,0,0,LBp;-LDp,0,0,-LB;0,-LBp,LB,0]);
-            %Mat = exp(-sqrt(LD^2+LDp^2))*expm([0,-LD,-LDp,0;-LD,0,0,-LBp;-LDp,0,0,LB;0,LBp,-LB,0]);
+            %LDp = imag(Lp);
+            %Mat =
+            %exp(-sqrt(LD^2+LDp^2))*expm([0,-LD,-LDp,0;-LD,0,0,LBp;-LDp,0,0,-LB;0,-LBp,LB,0]);
+            %%inlcude calculation of LD if there is dichroism
+            Mat = expm([0,0,0,0;0,0,0,LBp;0,0,0,-LB;0,-LBp,LB,0]);
             M = Mat * M; % Mueller matrix;
             J = nearestJones(M); % Jones matrix
             O = jonesAnisotropy(J);
@@ -115,7 +117,7 @@ colormap(blackToGreen);
 caxis([0 1.57]); % 0 to pi/2
     for k = 1:numFibers
             baseZ = (k-1) * a;
-            tilt = (k-1) * psi_0;
+            tilt = (k-1) * -psi_0;
             corners = [-c/2, -b/2; c/2, -b/2; c/2, b/2; -c/2, b/2];
             Ro = [cos(tilt), -sin(tilt); sin(tilt), cos(tilt)];
             rotatedCorners = corners * Ro;
